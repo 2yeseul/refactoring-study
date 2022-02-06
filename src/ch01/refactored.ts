@@ -5,28 +5,30 @@ export function statement(invoice: Invoice) {
   let volumeCredits = 0
 
   let result = `청구 내역 (고객명: ${invoice.customer})\n`
-  const format = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-  })
 
   for (const performance of invoice.performance) {
     // 추출한 함수를 이용해 값을 누적
     volumeCredits += volumeCreditsFor(performance)
 
-    result += ` ${playFor(performance).name}: ${format.format(
-      amountFor(performance) / 100,
-    )} (${performance.audience}석)\n`
+    result += ` ${playFor(performance).name}: ${usd(amountFor(performance))} (${
+      performance.audience
+    }석)\n`
     totalAmount += amountFor(performance)
   }
 
-  result += `총액: ${format.format(totalAmount / 100)}\n`
+  result += `총액: ${usd(totalAmount)}\n`
   result += `적립 포인트: ${volumeCredits}\n`
 
   return result
 }
 
+function usd(totalAmount: number) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+  }).format(totalAmount / 100)
+}
 function volumeCreditsFor(performance: { playId: string; audience: number }) {
   let volumeCredits = 0
 
