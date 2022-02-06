@@ -13,7 +13,7 @@ export function statement(invoice: Invoice) {
 
   for (const performance of invoice.performance) {
     // 추출한 함수를 이용해 값을 누적
-    volumeCredits = volumeCreditsFor(performance)
+    volumeCredits += volumeCreditsFor(performance)
 
     result += ` ${playFor(performance).name}: ${format.format(
       amountFor(performance) / 100,
