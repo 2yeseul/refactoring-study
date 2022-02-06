@@ -12,10 +12,8 @@ export function statement(invoice: Invoice) {
   })
 
   for (const performance of invoice.performance) {
-    volumeCredits += Math.max(performance.audience - 30, 0)
-    if (playFor(performance).type === 'comedy') {
-      volumeCredits += Math.floor(performance.audience / 5)
-    }
+    // 추출한 함수를 이용해 값을 누적
+    volumeCredits = volumeCreditsFor(performance)
 
     result += ` ${playFor(performance).name}: ${format.format(
       amountFor(performance) / 100,
@@ -27,6 +25,18 @@ export function statement(invoice: Invoice) {
   result += `적립 포인트: ${volumeCredits}\n`
 
   return result
+}
+
+function volumeCreditsFor(performance: { playId: string; audience: number }) {
+  let volumeCredits = 0
+
+  volumeCredits += Math.max(performance.audience - 30, 0)
+
+  if (playFor(performance).type === 'comedy') {
+    volumeCredits += Math.floor(performance.audience / 5)
+  }
+
+  return volumeCredits
 }
 
 // 1. 값이 바뀌지 않는 변수는 매개변수로 전달
