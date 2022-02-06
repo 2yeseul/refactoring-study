@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --verbose",
     "lint:es": "eslint '**/*.{js,ts,tsx}'",
     "lint:es:fix": "npm run lint:es -- --fix",
     "lint:etc": "prettier '**/*.{json,yaml,md}' --check",
@@ -25,7 +25,14 @@
   "homepage": "https://github.com/2yeseul/refactoring-study#readme",
   "devDependencies": {
     "@titicaca/eslint-config-triple": "^3.0.3",
+    "@types/jest": "^27.4.0",
+    "jest": "^27.5.0",
+    "ts-jest": "^27.1.3",
+    "ts-node": "^10.4.0",
     "typescript": "^4.5.5"
   },
-  "prettier": "@titicaca/eslint-config-triple/prettierrc"
+  "prettier": "@titicaca/eslint-config-triple/prettierrc",
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
 }

@@ -11,10 +11,7 @@ export function statement(invoice: Invoice) {
     minimumFractionDigits: 2,
   })
 
-  for (const performance of invoice.performances) {
-    // 한 번의 공연에 대한 요금 계산
-    // 코드 조각을 별도 함수로 추출하여 분석한 코드에 대한 정보를 반영
-
+  for (const performance of invoice.performance) {
     volumeCredits += Math.max(performance.audience - 30, 0)
     if (playFor(performance).type === 'comedy') {
       volumeCredits += Math.floor(performance.audience / 5)
