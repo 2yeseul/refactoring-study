@@ -12,3 +12,18 @@ export interface Play {
     type: string
   }
 }
+
+export const PLAYS: Record<string, Play[keyof Play]> = {
+  hamlet: {
+    name: 'Hamlet',
+    type: 'tragedy',
+  },
+  'as-like': {
+    name: 'As You Like It',
+    type: 'comedy',
+  },
+  othello: {
+    name: 'Othello',
+    type: 'tragedy',
+  },
+}
