@@ -1,6 +1,6 @@
-import { Invoice, Play, PLAYS } from './theater'
+import { Invoice, PLAYS } from './theater'
 
-export function statement(invoice: Invoice, plays: Play) {
+export function statement(invoice: Invoice) {
   let totalAmount = 0
   let volumeCredits = 0
 
@@ -12,23 +12,20 @@ export function statement(invoice: Invoice, plays: Play) {
   })
 
   for (const performance of invoice.performances) {
-    const play = playFor(performance)
-
     // 한 번의 공연에 대한 요금 계산
     // 코드 조각을 별도 함수로 추출하여 분석한 코드에 대한 정보를 반영
 
-    const thisAmount = amountFor(performance, play)
-
     volumeCredits += Math.max(performance.audience - 30, 0)
-    if (play.type === 'comedy') {
+    if (playFor(performance).type === 'comedy') {
       volumeCredits += Math.floor(performance.audience / 5)
     }
 
-    result += ` ${play.name}: ${format.format(thisAmount / 100)} (${
-      performance.audience
-    }석)\n`
-    totalAmount += thisAmount
+    result += ` ${playFor(performance).name}: ${format.format(
+      amountFor(performance) / 100,
+    )} (${performance.audience}석)\n`
+    totalAmount += amountFor(performance)
   }
+
   result += `총액: ${format.format(totalAmount / 100)}\n`
   result += `적립 포인트: ${volumeCredits}\n`
 
@@ -41,11 +38,10 @@ export function statement(invoice: Invoice, plays: Play) {
 function playFor(performance: { playId: string; audience: number }) {
   return PLAYS[performance.playId]
 }
-function amountFor(
-  performance: { playId: string; audience: number },
-  play: Play[keyof Play],
-) {
+function amountFor(performance: { playId: string; audience: number }) {
   let result = 0
+
+  const play = playFor(performance)
 
   switch (play.type) {
     case 'tragedy':
