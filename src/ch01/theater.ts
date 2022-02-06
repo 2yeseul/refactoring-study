@@ -1,6 +1,6 @@
 export interface Invoice {
   customer: string
-  performances: {
+  performance: {
     playId: string
     audience: number
   }[]
