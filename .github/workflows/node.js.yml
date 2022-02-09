@@ -30,6 +30,13 @@ jobs:
         run: npm ci
       - run: npm run build
       - name: 🧪 Test
-        run: npm test
-      - name: ✅ Test Report
-        uses: IgnusG/jest-report-action@v2.3.3
+        run: npm run test-report
+      - name: ✅ Report Test
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: test-results
+          path: junit.xml
+          fail-on-error: 'false'
+          reporter: jest-junit        # Format of test results
+          token: ${{ secrets.GITHUB_TOKEN }}
