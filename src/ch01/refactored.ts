@@ -2,24 +2,30 @@ import { Invoice, PLAYS } from './theater'
 
 export function statement(invoice: Invoice) {
   let totalAmount = 0
-  let volumeCredits = 0
 
   let result = `청구 내역 (고객명: ${invoice.customer})\n`
 
   for (const performance of invoice.performance) {
-    // 추출한 함수를 이용해 값을 누적
-    volumeCredits += volumeCreditsFor(performance)
-
     result += ` ${playFor(performance).name}: ${usd(amountFor(performance))} (${
       performance.audience
     }석)\n`
     totalAmount += amountFor(performance)
   }
 
+  // volumeCredits 값 갱신과 관련한 문장들을 한 데 모아두면 임시 변수를 질의 함수로 바꾸기가 수월해진다.
+
   result += `총액: ${usd(totalAmount)}\n`
-  result += `적립 포인트: ${volumeCredits}\n`
+  result += `적립 포인트: ${totalVolumeCredits(invoice.performance)}점\n`
 
   return result
+}
+
+function totalVolumeCredits(performances: Invoice['performance']) {
+  let volumeCredits = 0
+  for (const performance of performances) {
+    volumeCredits += volumeCreditsFor(performance)
+  }
+  return volumeCredits
 }
 
 function usd(totalAmount: number) {
