@@ -11,7 +11,7 @@ export function statement(invoice: Invoice, plays: Play) {
     minimumFractionDigits: 2,
   })
 
-  for (const performance of invoice.performances) {
+  for (const performance of invoice.performance) {
     const play = plays[performance.playId]
     let thisAmount = 0
 
